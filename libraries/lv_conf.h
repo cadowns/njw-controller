@@ -325,26 +325,26 @@
 
 /*Montserrat fonts with ASCII range and some symbols using bpp = 4
  *https://fonts.google.com/specimen/Montserrat*/
-#define LV_FONT_MONTSERRAT_8  1
-#define LV_FONT_MONTSERRAT_10 1
-#define LV_FONT_MONTSERRAT_12 1
+#define LV_FONT_MONTSERRAT_8 0
+#define LV_FONT_MONTSERRAT_10 0
+#define LV_FONT_MONTSERRAT_12 0
 #define LV_FONT_MONTSERRAT_14 1
-#define LV_FONT_MONTSERRAT_16 1
-#define LV_FONT_MONTSERRAT_18 1
-#define LV_FONT_MONTSERRAT_20 1
-#define LV_FONT_MONTSERRAT_22 1
-#define LV_FONT_MONTSERRAT_24 1
+#define LV_FONT_MONTSERRAT_16 0
+#define LV_FONT_MONTSERRAT_18 0
+#define LV_FONT_MONTSERRAT_20 0
+#define LV_FONT_MONTSERRAT_22 0
+#define LV_FONT_MONTSERRAT_24 0
 #define LV_FONT_MONTSERRAT_26 1
-#define LV_FONT_MONTSERRAT_28 1
-#define LV_FONT_MONTSERRAT_30 1
-#define LV_FONT_MONTSERRAT_32 1
-#define LV_FONT_MONTSERRAT_34 1
-#define LV_FONT_MONTSERRAT_36 1
-#define LV_FONT_MONTSERRAT_38 1
-#define LV_FONT_MONTSERRAT_40 1
+#define LV_FONT_MONTSERRAT_28 0
+#define LV_FONT_MONTSERRAT_30 0
+#define LV_FONT_MONTSERRAT_32 0
+#define LV_FONT_MONTSERRAT_34 0
+#define LV_FONT_MONTSERRAT_36 0
+#define LV_FONT_MONTSERRAT_38 0
+#define LV_FONT_MONTSERRAT_40 0
 #define LV_FONT_MONTSERRAT_42 1
-#define LV_FONT_MONTSERRAT_44 1
-#define LV_FONT_MONTSERRAT_46 1
+#define LV_FONT_MONTSERRAT_44 0
+#define LV_FONT_MONTSERRAT_46 0
 #define LV_FONT_MONTSERRAT_48 1
 
 /*Demonstrate special features*/
@@ -594,7 +594,7 @@
 #endif
 
 /*API for FATFS (needs to be added separately). Uses f_open, f_read, etc*/
-#define LV_USE_FS_FATFS  0
+#define LV_USE_FS_FATFS 0
 #if LV_USE_FS_FATFS
     #define LV_FS_FATFS_LETTER '\0'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
     #define LV_FS_FATFS_CACHE_SIZE 0    /*>0 to cache this number of bytes in lv_fs_read()*/
