@@ -102,6 +102,7 @@ lv_obj_t * uic_TextEntryPreview;
 lv_obj_t * uic_TextEntryDoneLabel;
 
 extern int input;
+extern int dispVol;
 extern void changeInput(int input);
 extern void handleVolume(int vol);
 
@@ -121,17 +122,21 @@ lv_obj_t * ui____initial_actions0;
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
+void selectInput1(){
+    _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+    input = 1;
+    changeInput(0x01);
+}
+
 void ui_event_Input1_Input1_Input1Button(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        input = 1;
-        changeInput(0x01);
+        selectInput1();
     }
 }
 

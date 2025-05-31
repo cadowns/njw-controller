@@ -4,15 +4,24 @@
 #include "FT6236.h"
 #include "ui.h"
 #include "Wire.h"
+#include "Preferences.h"
 
+
+Preferences states;
 
 const int i2c_touch_addr = TOUCH_I2C_ADD;
 
 int old_input=0, input=0;
 
-byte min_vol = 0xFE;
-byte max_vol = 0x24;
-byte cur_vol;
+int minVol = 0;
+int maxVol = 100;
+int dispVol;
+int default_vol = 50;
+
+int testVol = 50;
+
+int delta;
+int old_delta;
 
 #define LCD_BL 46
 
@@ -152,30 +161,74 @@ void sendI2C(byte reg, byte data){
   Wire.endTransmission();
 }
 
+void encVolControl(int neg){
+  if (neg == 1){
+    volumeDecrement();
+  } else {
+    volumeIncrement();
+  }
+}
+
 void volumeIncrement(){
-  sendI2C(0x00,0x24);
+  dispVol += 1;
+  handleVolume(dispVol);
+}
+
+void volumeDecrement(){
+  dispVol -= 1;
+  handleVolume(dispVol);
 }
 
 extern "C" {
   void handleVolume(int vol){
-    byte mapVol = map(vol, 0, 100, 0xFE, 0x24);
-    Serial.println(mapVol);
-    sendI2C(0x00, mapVol);
-
+    dispVol = vol; // save vol (0-100) to global var
+    states.putInt("vol", dispVol); // save EEPROM vol
+    byte hexVol = map(dispVol, 0, 100, 0xFE, 0x24); // map displayVol to NJW vol
+    sendI2C(0x00, hexVol); //send vol to NJW
+    char dispVolChar[16]; //create char for dispVol representation
+    itoa(dispVol, dispVolChar, 10); //convert dispVar to char array
+    lv_label_set_text(ui_volLabel, dispVolChar); //update volume label on display
+    lv_arc_set_value(ui_volIndicator, dispVol); //update volume indicator
   }
 }
+
+
 
 extern "C" {
   void changeInput(byte input){
     Serial.println("calling changeInput with input\n");
     Serial.write(input);
     sendI2C(0x02,input);
+    states.putChar("input", input);
   }
+}
+
+void reloadLastState(){
+  bool doesVolExist = states.isKey("vol");
+  if (doesVolExist) {
+    handleVolume(states.getInt("vol"));
+  } else {
+    handleVolume(default_vol);
+  }
+  
+  bool doesInputExist = states.isKey("input");
+  if (doesInputExist) {
+    changeInput(states.getChar("input"));
+  } else {
+    changeInput(0x01);
+  }
+
 }
 
 void setup()
 {
+  
+
   Serial.begin( 115200 ); /* prepare for possible serial debug */
+  states.begin("State", false); //EEPROM for saving state between reboots
+
+
+
 
 
   //IO口引脚
@@ -213,6 +266,7 @@ void setup()
 
 
   ui_init();
+  reloadLastState();
 
   
 }
@@ -222,6 +276,20 @@ void loop()
   if (input != old_input) {
     Serial.println(input);
     old_input = input;
+  }
+
+  Wire.requestFrom(0x5A, 1);
+  if (Wire.available()) {
+    byte d = Wire.read();
+    if (d != 0){
+      Serial.println(d);
+      Serial.println(d, BIN);
+      int neg = bitRead(d,7);
+      Serial.println(neg);
+      encVolControl(neg);
+      neg = 0;
+    }
+
   }
 
   lv_timer_handler(); /* let the GUI do its work */
