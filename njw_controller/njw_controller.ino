@@ -157,7 +157,6 @@ void sendI2C(byte reg, byte data){
   Wire.beginTransmission(0x5A);
   byte message[] = {reg, data};
   Wire.write(message, sizeof(message));
-  Serial.write(message, sizeof(message));
   Wire.endTransmission();
 }
 
@@ -170,13 +169,22 @@ void encVolControl(int neg){
 }
 
 void volumeIncrement(){
-  dispVol += 1;
-  handleVolume(dispVol);
+  if (dispVol <= 99) {
+    dispVol += 1;
+    handleVolume(dispVol);
+  } else {
+    Serial.println("Max volume reached");
+  }
 }
 
 void volumeDecrement(){
-  dispVol -= 1;
-  handleVolume(dispVol);
+  if (dispVol >= 1) {
+    dispVol -= 1;
+    handleVolume(dispVol);
+  } else {
+    Serial.println("Min volume reached");
+  }
+  
 }
 
 extern "C" {
