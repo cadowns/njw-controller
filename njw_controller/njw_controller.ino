@@ -3,11 +3,16 @@
 #include <LovyanGFX.hpp>
 #include "FT6236.h"
 #include "ui.h"
+#include "Wire.h"
 
 
 const int i2c_touch_addr = TOUCH_I2C_ADD;
 
-int input;
+int old_input=0, input=0;
+
+byte min_vol = 0xFE;
+byte max_vol = 0x24;
+byte cur_vol;
 
 #define LCD_BL 46
 
@@ -109,7 +114,7 @@ void my_touchpad_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
    data->point.y = pos[0];
     // data->point.y = pos[1];
     // data->point.x = pos[0];
-    Serial.printf("x-%d,y-%d\n", data->point.x, data->point.y);
+    // Serial.printf("x-%d,y-%d\n", data->point.x, data->point.y);
   }
   else {
     data->state = LV_INDEV_STATE_REL;
@@ -136,6 +141,35 @@ void touch_init()
   {
     Serial.print("Unknown error at address 0x");
     Serial.println(i2c_touch_addr, HEX);
+  }
+}
+
+void sendI2C(byte reg, byte data){
+  Wire.beginTransmission(0x5A);
+  byte message[] = {reg, data};
+  Wire.write(message, sizeof(message));
+  Serial.write(message, sizeof(message));
+  Wire.endTransmission();
+}
+
+void volumeIncrement(){
+  sendI2C(0x00,0x24);
+}
+
+extern "C" {
+  void handleVolume(int vol){
+    byte mapVol = map(vol, 0, 100, 0xFE, 0x24);
+    Serial.println(mapVol);
+    sendI2C(0x00, mapVol);
+
+  }
+}
+
+extern "C" {
+  void changeInput(byte input){
+    Serial.println("calling changeInput with input\n");
+    Serial.write(input);
+    sendI2C(0x02,input);
   }
 }
 
@@ -185,8 +219,10 @@ void setup()
 
 void loop()
 {
-
-  Serial.println(input);
+  if (input != old_input) {
+    Serial.println(input);
+    old_input = input;
+  }
 
   lv_timer_handler(); /* let the GUI do its work */
   delay( 5 );

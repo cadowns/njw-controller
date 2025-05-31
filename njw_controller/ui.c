@@ -102,6 +102,8 @@ lv_obj_t * uic_TextEntryPreview;
 lv_obj_t * uic_TextEntryDoneLabel;
 
 extern int input;
+extern void changeInput(int input);
+extern void handleVolume(int vol);
 
 // EVENTS
 lv_obj_t * ui____initial_actions0;
@@ -129,6 +131,7 @@ void ui_event_Input1_Input1_Input1Button(lv_event_t * e)
         _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
         input = 1;
+        changeInput(0x01);
     }
 }
 
@@ -142,6 +145,7 @@ void ui_event_Input2_Input2_Input2Button(lv_event_t * e)
         _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
         _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         input = 2;
+        changeInput(0x02);
     }
 }
 
@@ -155,6 +159,7 @@ void ui_event_Input3_Input3_Input3Button(lv_event_t * e)
         _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         input = 3;
+        changeInput(0x03);
     }
 }
 
@@ -168,6 +173,7 @@ void ui_event_Input4_Input4_Input4Button(lv_event_t * e)
         _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
         input = 4;
+        changeInput(0x04);
     }
 }
 
@@ -178,6 +184,7 @@ void ui_event_volIndicator(lv_event_t * e)
 
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         _ui_arc_set_text_value(ui_volLabel, target, "", "");
+        handleVolume(lv_arc_get_value(target));
     }
 }
 
