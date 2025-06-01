@@ -52,7 +52,7 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_set_style_text_font(ui_volLabel, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_trebleSlider = lv_slider_create(ui_HomeScreen);
-    lv_slider_set_range(ui_trebleSlider, -5, 5);
+    lv_slider_set_range(ui_trebleSlider, -10, 10);
     lv_slider_set_mode(ui_trebleSlider, LV_SLIDER_MODE_SYMMETRICAL);
     lv_slider_set_value(ui_trebleSlider, 0, LV_ANIM_OFF);
     if(lv_slider_get_mode(ui_trebleSlider) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_trebleSlider, 0,
@@ -72,7 +72,7 @@ void ui_HomeScreen_screen_init(void)
     lv_label_set_text(ui_trebleLabel, "Treble");
 
     ui_bassSlider = lv_slider_create(ui_HomeScreen);
-    lv_slider_set_range(ui_bassSlider, -5, 5);
+    lv_slider_set_range(ui_bassSlider, -10, 10);
     lv_slider_set_mode(ui_bassSlider, LV_SLIDER_MODE_SYMMETRICAL);
     lv_slider_set_value(ui_bassSlider, 0, LV_ANIM_OFF);
     if(lv_slider_get_mode(ui_bassSlider) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_bassSlider, 0, LV_ANIM_OFF);
@@ -142,6 +142,8 @@ void ui_HomeScreen_screen_init(void)
                         NULL);
     lv_obj_add_event_cb(ui_volIndicator, ui_event_volIndicator, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Settings, ui_event_Settings, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_trebleSlider, ui_event_trebleSlider, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_bassSlider, ui_event_bassSlider, LV_EVENT_ALL, NULL);
     uic_Input1 = ui_Input1;
     uic_Input1_Input1Button = ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN);
     uic_Input1_Input1Label = ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTNLBL);

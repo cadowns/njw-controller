@@ -201,8 +201,6 @@ extern "C" {
   }
 }
 
-
-
 extern "C" {
   void changeInput(byte input){
     Serial.println("calling changeInput with input\n");
@@ -211,6 +209,21 @@ extern "C" {
     states.putChar("input", input);
   }
 }
+
+extern "C" {
+  void handleTreble(int trebleLevel){
+    Serial.println("calling handleTreble with treble level: " + trebleLevel);
+    sendI2C(0x03,byte(trebleLevel));
+  }
+}
+
+extern "C" {
+  void handleBass(int bassLevel){
+    Serial.println("calling handleTreble with treble level: " + bassLevel);
+    sendI2C(0x04,byte(bassLevel));
+  }
+}
+
 
 void reloadLastState(){
   bool doesVolExist = states.isKey("vol");

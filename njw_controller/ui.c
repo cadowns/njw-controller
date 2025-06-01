@@ -23,8 +23,10 @@ void ui_event_volIndicator(lv_event_t * e);
 lv_obj_t * ui_volIndicator;
 lv_obj_t * ui_volLabel;
 lv_obj_t * ui_trebleSlider;
+void ui_event_trebleSlider(lv_event_t * e);
 lv_obj_t * ui_trebleLabel;
 lv_obj_t * ui_bassSlider;
+void ui_event_bassSlider(lv_event_t * e);
 lv_obj_t * ui_bassLabel;
 lv_obj_t * ui_trebleDownLabel;
 lv_obj_t * ui_trebleUpLabel;
@@ -106,6 +108,8 @@ extern int dispVol;
 void selectInput(int inputInt);
 extern void changeInput(int input);
 extern void handleVolume(int vol);
+extern void handleTreble(int trebleLevel);
+extern void handleBass(int trebleLevel);
 
 
 // EVENTS
@@ -202,6 +206,24 @@ void ui_event_volIndicator(lv_event_t * e)
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         _ui_arc_set_text_value(ui_volLabel, target, "", "");
         handleVolume(lv_arc_get_value(target));
+    }
+}
+
+void ui_event_trebleSlider(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED){
+        handleTreble(lv_slider_get_value(target));
+    }
+}
+
+void ui_event_bassSlider(lv_event_t * e){
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED){
+        handleBass(lv_slider_get_value(target));
     }
 }
 
