@@ -214,13 +214,29 @@ extern "C" {
   void handleTreble(int trebleLevel){
     Serial.println("calling handleTreble with treble level: " + trebleLevel);
     sendI2C(0x03,byte(trebleLevel));
+    String treble = "Treble";
+    String trebLabel = "Treble: ";
+    String trebLabelNum = trebLabel + trebleLevel;
+    if (trebleLevel == 0) {
+      lv_label_set_text(ui_trebleLabel, treble.c_str());
+    } else {
+      lv_label_set_text(ui_trebleLabel, trebLabelNum.c_str());
+    }
   }
 }
 
 extern "C" {
   void handleBass(int bassLevel){
-    Serial.println("calling handleTreble with treble level: " + bassLevel);
+    Serial.println("calling handleBass with treble level: " + bassLevel);
     sendI2C(0x04,byte(bassLevel));
+    String bass = "Bass";
+    String bassLabel = "Bass: ";
+    String bassLabelNum = bassLabel + bassLevel;
+    if (bassLevel == 0) {
+      lv_label_set_text(ui_bassLabel, bass.c_str());
+    } else {
+      lv_label_set_text(ui_bassLabel, bassLabelNum.c_str());
+    }
   }
 }
 
