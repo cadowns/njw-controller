@@ -9,6 +9,7 @@
 
 Preferences states;
 
+
 const int i2c_touch_addr = TOUCH_I2C_ADD;
 
 int old_input=0, input=0;
@@ -221,9 +222,9 @@ void reloadLastState(){
   
   bool doesInputExist = states.isKey("input");
   if (doesInputExist) {
-    changeInput(states.getChar("input"));
+    selectInput(states.getChar("input"));
   } else {
-    changeInput(0x01);
+    selectInput(1);
   }
 
 }

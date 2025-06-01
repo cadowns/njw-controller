@@ -103,8 +103,10 @@ lv_obj_t * uic_TextEntryDoneLabel;
 
 extern int input;
 extern int dispVol;
+void selectInput(int inputInt);
 extern void changeInput(int input);
 extern void handleVolume(int vol);
+
 
 // EVENTS
 lv_obj_t * ui____initial_actions0;
@@ -122,21 +124,46 @@ lv_obj_t * ui____initial_actions0;
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
-void selectInput1(){
-    _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-    input = 1;
-    changeInput(0x01);
+void selectInput(int inputInt){
+    switch (inputInt){
+        case 0x01:
+            _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+            changeInput(0x01);
+            break;
+        case 0x02:
+            _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+            _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            changeInput(0x02);
+            break;
+        case 0x03:
+            _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+            _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            changeInput(0x03);
+            break;
+        case 0x04:
+            _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+            _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+            changeInput(0x04);
+            break;
+    }
 }
+
 
 void ui_event_Input1_Input1_Input1Button(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        selectInput1();
+        selectInput(1);
     }
 }
 
@@ -145,12 +172,7 @@ void ui_event_Input2_Input2_Input2Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        input = 2;
-        changeInput(0x02);
+        selectInput(2);
     }
 }
 
@@ -159,12 +181,7 @@ void ui_event_Input3_Input3_Input3Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        input = 3;
-        changeInput(0x03);
+        selectInput(3);
     }
 }
 
@@ -173,12 +190,7 @@ void ui_event_Input4_Input4_Input4Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_state_modify(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        _ui_state_modify(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        input = 4;
-        changeInput(0x04);
+        selectInput(4);
     }
 }
 
