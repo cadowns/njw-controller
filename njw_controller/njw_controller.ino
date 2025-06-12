@@ -261,15 +261,19 @@ void reloadLastState(){
   bool doesBassLevelExist = states.isKey("bassLevel");
   if (doesBassLevelExist) {
     handleBass(states.getInt("bassLevel"));
+    lv_slider_set_value(ui_bassSlider, states.getInt("bassLevel"), LV_ANIM_OFF);
   } else {
     handleBass(0);
+    lv_slider_set_value(ui_bassSlider, 0, LV_ANIM_OFF);
   }
 
   bool doesTrebleLevelExist = states.isKey("trebleLevel");
   if (doesTrebleLevelExist) {
     handleTreble(states.getInt("trebleLevel"));
+    lv_slider_set_value(ui_trebleSlider, states.getInt("trebleLevel"), LV_ANIM_OFF);
   } else {
     handleTreble(0);
+    lv_slider_set_value(ui_trebleSlider, 0, LV_ANIM_OFF);
   }
 
 }
