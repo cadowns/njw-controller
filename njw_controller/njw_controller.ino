@@ -214,6 +214,7 @@ extern "C" {
   void handleTreble(int trebleLevel){
     Serial.println("calling handleTreble with treble level: " + trebleLevel);
     sendI2C(0x03,byte(trebleLevel));
+    states.putInt("trebleLevel", trebleLevel);
     String treble = "Treble";
     String trebLabel = "Treble: ";
     String trebLabelNum = trebLabel + trebleLevel;
@@ -229,6 +230,7 @@ extern "C" {
   void handleBass(int bassLevel){
     Serial.println("calling handleBass with treble level: " + bassLevel);
     sendI2C(0x04,byte(bassLevel));
+    states.putInt("bassLevel", bassLevel);
     String bass = "Bass";
     String bassLabel = "Bass: ";
     String bassLabelNum = bassLabel + bassLevel;
@@ -254,6 +256,20 @@ void reloadLastState(){
     selectInput(states.getChar("input"));
   } else {
     selectInput(1);
+  }
+
+  bool doesBassLevelExist = states.isKey("bassLevel");
+  if (doesBassLevelExist) {
+    handleBass(states.getInt("bassLevel"));
+  } else {
+    handleBass(0);
+  }
+
+  bool doesTrebleLevelExist = states.isKey("trebleLevel");
+  if (doesTrebleLevelExist) {
+    handleTreble(states.getInt("trebleLevel"));
+  } else {
+    handleTreble(0);
   }
 
 }
