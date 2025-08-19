@@ -14,25 +14,25 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_set_x(ui_Input1, -166);
     lv_obj_set_y(ui_Input1, -113);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTNLBL), "Input 1");
+    lv_label_set_text(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTNLBL), "DAC");
 
     ui_Input2 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input2, -166);
     lv_obj_set_y(ui_Input2, -38);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTNLBL), "Input 2");
+    lv_label_set_text(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTNLBL), "CMPTR");
 
     ui_Input3 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input3, -165);
     lv_obj_set_y(ui_Input3, 35);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTNLBL), "Input 3");
+    lv_label_set_text(ui_comp_get_child(ui_Input3, UI_COMP_TXTBTN_BTNLBL), "CD");
 
     ui_Input4 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input4, -165);
     lv_obj_set_y(ui_Input4, 107);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "Input 4");
+    lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "AUX");
 
     ui_volIndicator = lv_arc_create(ui_HomeScreen);
     lv_obj_set_width(ui_volIndicator, 202);
