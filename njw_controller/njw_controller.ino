@@ -24,6 +24,9 @@ int testVol = 50;
 int delta;
 int old_delta;
 
+int volBeforeMute = 0;
+bool isMuted = false;
+
 #define LCD_BL 46
 
 #define SDA_FT6236 38
@@ -207,6 +210,20 @@ extern "C" {
     Serial.write(input);
     sendI2C(0x02,input);
     states.putChar("input", input);
+  }
+}
+
+extern "C"{
+  void handleMute(bool muteState){
+    if (muteState == true) {
+      volBeforeMute = dispVol;
+      isMuted = true;
+      sendI2C(0x01,0x00);
+    } else if (muteState == false) {
+      isMuted = false;
+      handleVolume(volBeforeMute);
+      volBeforeMute = 0;
+    }
   }
 }
 

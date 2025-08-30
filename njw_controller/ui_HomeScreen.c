@@ -10,6 +10,16 @@ void ui_HomeScreen_screen_init(void)
     ui_HomeScreen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_HomeScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
+    ui_muteBtn = ui_txtBtn_create(ui_HomeScreen);
+    lv_obj_set_x(ui_muteBtn, 65);
+    lv_obj_set_y(ui_muteBtn, -10);
+
+    // muteBtnLabel = lv_label_create(ui_muteBtn);
+    // lv_label_set_text(muteBtnLabel, "Mute");
+    // lv_obj_center(muteBtnLabel);
+
+    lv_label_set_text(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTNLBL), "Mute");
+
     ui_Input1 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input1, -166);
     lv_obj_set_y(ui_Input1, -113);
@@ -34,19 +44,19 @@ void ui_HomeScreen_screen_init(void)
 
     lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "AUX");
 
-    ui_volIndicator = lv_arc_create(ui_HomeScreen);
+    ui_volIndicator = lv_bar_create(ui_HomeScreen);
     lv_obj_set_width(ui_volIndicator, 202);
-    lv_obj_set_height(ui_volIndicator, 212);
+    lv_obj_set_height(ui_volIndicator, 20);
     lv_obj_set_x(ui_volIndicator, 78);
-    lv_obj_set_y(ui_volIndicator, -27);
+    lv_obj_set_y(ui_volIndicator, -90);
     lv_obj_set_align(ui_volIndicator, LV_ALIGN_CENTER);
-    lv_arc_set_value(ui_volIndicator, 50);
+    lv_bar_set_value(ui_volIndicator, 50, LV_ANIM_OFF);
 
     ui_volLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_volLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_volLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_volLabel, 76);
-    lv_obj_set_y(ui_volLabel, -33);
+    lv_obj_set_x(ui_volLabel, 175);
+    lv_obj_set_y(ui_volLabel, -10);
     lv_obj_set_align(ui_volLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_volLabel, "50");
     lv_obj_set_style_text_font(ui_volLabel, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -132,6 +142,8 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_add_flag(ui_Settings, LV_OBJ_FLAG_CLICKABLE);     /// Flags
     lv_obj_set_style_text_font(ui_Settings, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    lv_obj_add_event_cb(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), ui_event_muteBtn, LV_EVENT_ALL,
+                        NULL);
     lv_obj_add_event_cb(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), ui_event_Input1_Input1_Input1Button, LV_EVENT_ALL,
                         NULL);
     lv_obj_add_event_cb(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTN), ui_event_Input2_Input2_Input2Button, LV_EVENT_ALL,

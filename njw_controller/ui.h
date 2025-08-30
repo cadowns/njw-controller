@@ -29,8 +29,11 @@ extern "C" {
 
 // SCREEN: ui_HomeScreen
 void ui_HomeScreen_screen_init(void);
+extern lv_obj_t * ui_muteBtn;
+extern lv_obj_t * muteBtnLabel;
 extern lv_obj_t * ui_HomeScreen;
 extern lv_obj_t * ui_Input1;
+void ui_event_muteBtn(lv_event_t * e);
 void ui_event_Input1_Input1_Input1Button(lv_event_t * e);
 void selectInput(int inputInt);
 extern lv_obj_t * ui_Input2;
