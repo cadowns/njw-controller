@@ -17,7 +17,7 @@ int old_input=0, input=0;
 int minVol = 0;
 int maxVol = 100;
 int dispVol;
-int default_vol = 50;
+int default_vol = 30;
 
 int testVol = 50;
 
@@ -199,12 +199,16 @@ extern "C" {
     }
     dispVol = vol; // save vol (0-100) to global var
     states.putInt("vol", dispVol); // save EEPROM vol
-    byte hexVol = map(dispVol, 0, 100, 0xFE, 0x24); // map displayVol to NJW vol
-    sendI2C(0x00, hexVol); //send vol to NJW
+    byte hexVol = map(dispVol, 0, 100, 0xD6, 0x68); // map displayVol to NJW vol
+    if (hexVol == 0xD6){
+      sendI2C(0x00, 0xFF);
+    } else {
+      sendI2C(0x00, hexVol); //send vol to NJW
+    }
     char dispVolChar[16]; //create char for dispVol representation
     itoa(dispVol, dispVolChar, 10); //convert dispVar to char array
     lv_label_set_text(ui_volLabel, dispVolChar); //update volume label on display
-    lv_arc_set_value(ui_volIndicator, dispVol); //update volume indicator
+    lv_bar_set_value(ui_volIndicator, dispVol, LV_ANIM_OFF); //update volume indicator
   }
 }
 
@@ -303,10 +307,13 @@ void reloadLastState(){
 
   bool doesMuteExist = states.isKey("mute");
   if (doesMuteExist) {
-    isMuted = true;
-    handleMute();
-  } else {
-    isMuted = false;
+    bool wasMuted = states.getBool("mute");
+    if (wasMuted) {
+      _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+      sendI2C(0x01,0x00);
+      isMuted = true;
+    } else {
+    }
   }
 
 }
