@@ -223,9 +223,11 @@ extern "C"{
       _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
       volBeforeMute = dispVol;
       isMuted = true;
+      states.putBool("mute", isMuted);
       sendI2C(0x01,0x00);
     } else if (isMuted == true) {
       isMuted = false;
+      states.putBool("mute", isMuted);
       handleVolume(volBeforeMute);
       volBeforeMute = 0;
       _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
@@ -297,6 +299,14 @@ void reloadLastState(){
   } else {
     handleTreble(0);
     lv_slider_set_value(ui_trebleSlider, 0, LV_ANIM_OFF);
+  }
+
+  bool doesMuteExist = states.isKey("mute");
+  if (doesMuteExist) {
+    isMuted = true;
+    handleMute();
+  } else {
+    isMuted = false;
   }
 
 }
