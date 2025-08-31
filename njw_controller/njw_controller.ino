@@ -193,6 +193,10 @@ void volumeDecrement(){
 
 extern "C" {
   void handleVolume(int vol){
+    if (isMuted) {
+      isMuted = false;
+      _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
     dispVol = vol; // save vol (0-100) to global var
     states.putInt("vol", dispVol); // save EEPROM vol
     byte hexVol = map(dispVol, 0, 100, 0xFE, 0x24); // map displayVol to NJW vol
@@ -214,15 +218,17 @@ extern "C" {
 }
 
 extern "C"{
-  void handleMute(bool muteState){
-    if (muteState == true) {
+  void handleMute(){
+    if (isMuted == false) {
+      _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
       volBeforeMute = dispVol;
       isMuted = true;
       sendI2C(0x01,0x00);
-    } else if (muteState == false) {
+    } else if (isMuted == true) {
       isMuted = false;
       handleVolume(volBeforeMute);
       volBeforeMute = 0;
+      _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
     }
   }
 }

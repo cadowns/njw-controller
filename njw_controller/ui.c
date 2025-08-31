@@ -110,7 +110,7 @@ extern int input;
 extern int dispVol;
 extern bool isMuted;
 void handleMuteBtn();
-extern void handleMute(bool muteState);
+extern void handleMute();
 void selectInput(int inputInt);
 extern void changeInput(int input);
 extern void handleVolume(int vol);
@@ -167,23 +167,12 @@ void selectInput(int inputInt){
     }
 }
 
-void handleMuteBtn(){
-    if (isMuted) {
-        _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-        handleMute(false);
-
-    } else {
-        _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        handleMute(true);
-    }
-}
-
 void ui_event_muteBtn(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        handleMuteBtn();
+        handleMute();
     }
 }
 
