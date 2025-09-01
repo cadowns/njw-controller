@@ -24,10 +24,8 @@ int testVol = 50;
 int delta;
 int old_delta;
 
-int savedTrebleLevel = 0;
 int volBeforeMute = 0;
 bool isMuted = false;
-bool isToneBypassed = false;
 
 
 #define LCD_BL 46
@@ -226,24 +224,6 @@ extern "C" {
   }
 }
 
-extern "C" {
-  void handleToneBypass() {
-    if (isToneBypassed == false) {
-      Serial.println("tone bypass on");
-      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-      isToneBypassed = true;
-      states.putBool("toneBypass", isToneBypassed);
-      sendI2C(0x05, 0x00);
-    } else if (isToneBypassed == true) {
-      Serial.println("tone bypass off");
-      isToneBypassed = false;
-      states.putBool("toneBypass", isToneBypassed);
-      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-      handleTreble(savedTrebleLevel);
-    }
-  }
-}
-
 extern "C"{
   void handleMute(){
     if (isMuted == false) {
@@ -260,48 +240,6 @@ extern "C"{
       handleVolume(volBeforeMute);
       volBeforeMute = 0;
       _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    }
-  }
-}
-
-extern "C" {
-  void handleTreble(int trebleLevel){
-    if (isToneBypassed) {
-      isToneBypassed =  false;
-      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    }
-    savedTrebleLevel = trebleLevel;
-    Serial.println("calling handleTreble with treble level: " + trebleLevel);
-    sendI2C(0x03,byte(trebleLevel));
-    states.putInt("trebleLevel", trebleLevel);
-    String treble = "Treble";
-    String trebLabel = "Treble: ";
-    String trebLabelNum = trebLabel + trebleLevel;
-    if (trebleLevel == 0) {
-      lv_label_set_text(ui_trebleLabel, treble.c_str());
-    } else {
-      lv_label_set_text(ui_trebleLabel, trebLabelNum.c_str());
-    }
-  }
-}
-
-extern "C" {
-  void handleBass(int bassLevel){
-    if (isToneBypassed) {
-      isToneBypassed =  false;
-      handleTreble(savedTrebleLevel);
-      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
-    }
-    Serial.println("calling handleBass with bass level: " + bassLevel);
-    sendI2C(0x04,byte(bassLevel));
-    states.putInt("bassLevel", bassLevel);
-    String bass = "Bass";
-    String bassLabel = "Bass: ";
-    String bassLabelNum = bassLabel + bassLevel;
-    if (bassLevel == 0) {
-      lv_label_set_text(ui_bassLabel, bass.c_str());
-    } else {
-      lv_label_set_text(ui_bassLabel, bassLabelNum.c_str());
     }
   }
 }
@@ -324,26 +262,6 @@ void reloadLastState(){
     selectInput(1);
   }
 
-  bool doesBassLevelExist = states.isKey("bassLevel");
-  if (doesBassLevelExist) {
-    Serial.println("reloaded bass level");
-    handleBass(states.getInt("bassLevel"));
-    lv_slider_set_value(ui_bassSlider, states.getInt("bassLevel"), LV_ANIM_OFF);
-  } else {
-    handleBass(0);
-    lv_slider_set_value(ui_bassSlider, 0, LV_ANIM_OFF);
-  }
-
-  bool doesTrebleLevelExist = states.isKey("trebleLevel");
-  if (doesTrebleLevelExist) {
-    Serial.println("reloaded treble level");
-    handleTreble(states.getInt("trebleLevel"));
-    lv_slider_set_value(ui_trebleSlider, states.getInt("trebleLevel"), LV_ANIM_OFF);
-  } else {
-    handleTreble(0);
-    lv_slider_set_value(ui_trebleSlider, 0, LV_ANIM_OFF);
-  }
-
   bool doesMuteExist = states.isKey("mute");
   if (doesMuteExist) {
     Serial.println("reloaded mute state");
@@ -355,19 +273,6 @@ void reloadLastState(){
     } else {
     }
   }
-
-  bool doesToneBypassExist = states.isKey("toneBypass");
-  if (doesToneBypassExist) {
-    Serial.println("reloaded tone bypass state");
-    bool wasToneBypassed = states.getBool("toneBypass");
-    if (wasToneBypassed) {
-      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-      sendI2C(0x05,0x00);
-      isToneBypassed = true;
-    } else {
-    }
-  }
-
 }
 
 void setup()
@@ -437,8 +342,6 @@ void loop()
     }
 
   }
-
-  Serial.println(isToneBypassed);
 
   lv_timer_handler(); /* let the GUI do its work */
   delay( 5 );

@@ -30,7 +30,6 @@ extern "C" {
 // SCREEN: ui_HomeScreen
 void ui_HomeScreen_screen_init(void);
 extern lv_obj_t * ui_muteBtn;
-extern lv_obj_t * ui_toneBypassBtn;
 extern lv_obj_t * muteBtnLabel;
 extern lv_obj_t * ui_HomeScreen;
 extern lv_obj_t * ui_Input1;
@@ -47,16 +46,6 @@ void ui_event_Input4_Input4_Input4Button(lv_event_t * e);
 void ui_event_volIndicator(lv_event_t * e);
 extern lv_obj_t * ui_volIndicator;
 extern lv_obj_t * ui_volLabel;
-extern lv_obj_t * ui_trebleSlider;
-void ui_event_trebleSlider(lv_event_t * e);
-extern lv_obj_t * ui_trebleLabel;
-extern lv_obj_t * ui_bassSlider;
-void ui_event_bassSlider(lv_event_t * e);
-extern lv_obj_t * ui_bassLabel;
-extern lv_obj_t * ui_trebleDownLabel;
-extern lv_obj_t * ui_trebleUpLabel;
-extern lv_obj_t * ui_bassDownLabel;
-extern lv_obj_t * ui_bassUpLabel;
 void ui_event_Settings(lv_event_t * e);
 extern lv_obj_t * ui_Settings;
 // CUSTOM VARIABLES
@@ -74,14 +63,6 @@ extern lv_obj_t * uic_Input4_Input4Button;
 extern lv_obj_t * uic_Input4_Input4Label;
 extern lv_obj_t * uic_volIndicator;
 extern lv_obj_t * uic_volLabel;
-extern lv_obj_t * uic_trebleSlider;
-extern lv_obj_t * uic_trebleLabel;
-extern lv_obj_t * uic_bassSlider;
-extern lv_obj_t * uic_bassLabel;
-extern lv_obj_t * uic_trebleDownLabel;
-extern lv_obj_t * uic_trebleUpLabel;
-extern lv_obj_t * uic_bassDownLabel;
-extern lv_obj_t * uic_bassUpLabel;
 
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);

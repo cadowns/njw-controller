@@ -13,10 +13,7 @@ void ui_HomeScreen_screen_init(void);
 lv_obj_t * ui_HomeScreen;
 lv_obj_t * ui_Input1;
 lv_obj_t * ui_muteBtn;
-lv_obj_t * ui_toneBypassBtn;
-lv_obj_t * muteBtnLabel;
 void ui_event_muteBtn(lv_event_t * e);
-void ui_event_toneBypassBtn(lv_event_t * e);
 void ui_event_Input1_Input1_Input1Button(lv_event_t * e);
 lv_obj_t * ui_Input2;
 void ui_event_Input2_Input2_Input2Button(lv_event_t * e);
@@ -27,16 +24,6 @@ void ui_event_Input4_Input4_Input4Button(lv_event_t * e);
 void ui_event_volIndicator(lv_event_t * e);
 lv_obj_t * ui_volIndicator;
 lv_obj_t * ui_volLabel;
-lv_obj_t * ui_trebleSlider;
-void ui_event_trebleSlider(lv_event_t * e);
-lv_obj_t * ui_trebleLabel;
-lv_obj_t * ui_bassSlider;
-void ui_event_bassSlider(lv_event_t * e);
-lv_obj_t * ui_bassLabel;
-lv_obj_t * ui_trebleDownLabel;
-lv_obj_t * ui_trebleUpLabel;
-lv_obj_t * ui_bassDownLabel;
-lv_obj_t * ui_bassUpLabel;
 void ui_event_Settings(lv_event_t * e);
 lv_obj_t * ui_Settings;
 // CUSTOM VARIABLES
@@ -54,14 +41,6 @@ lv_obj_t * uic_Input4_Input4Button;
 lv_obj_t * uic_Input4_Input4Label;
 lv_obj_t * uic_volIndicator;
 lv_obj_t * uic_volLabel;
-lv_obj_t * uic_trebleSlider;
-lv_obj_t * uic_trebleLabel;
-lv_obj_t * uic_bassSlider;
-lv_obj_t * uic_bassLabel;
-lv_obj_t * uic_trebleDownLabel;
-lv_obj_t * uic_trebleUpLabel;
-lv_obj_t * uic_bassDownLabel;
-lv_obj_t * uic_bassUpLabel;
 
 // SCREEN: ui_SettingsScreen
 void ui_SettingsScreen_screen_init(void);
@@ -113,12 +92,9 @@ extern int dispVol;
 extern bool isMuted;
 void handleMuteBtn();
 extern void handleMute();
-extern void handleToneBypass();
 void selectInput(int inputInt);
 extern void changeInput(int input);
 extern void handleVolume(int vol);
-extern void handleTreble(int trebleLevel);
-extern void handleBass(int trebleLevel);
 
 
 // EVENTS
@@ -167,15 +143,6 @@ void selectInput(int inputInt){
             _ui_state_modify(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
             changeInput(0x04);
             break;
-    }
-}
-
-void ui_event_toneBypassBtn(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_CLICKED) {
-        handleToneBypass();
     }
 }
 
@@ -233,24 +200,6 @@ void ui_event_volIndicator(lv_event_t * e)
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         _ui_arc_set_text_value(ui_volLabel, target, "", "");
         handleVolume(lv_arc_get_value(target));
-    }
-}
-
-void ui_event_trebleSlider(lv_event_t * e){
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-
-    if(event_code == LV_EVENT_VALUE_CHANGED){
-        handleTreble(lv_slider_get_value(target));
-    }
-}
-
-void ui_event_bassSlider(lv_event_t * e){
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-
-    if(event_code == LV_EVENT_VALUE_CHANGED){
-        handleBass(lv_slider_get_value(target));
     }
 }
 
@@ -361,7 +310,7 @@ void ui_event_TextEntryPreview(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_label_set_property(ui_trebleUpLabel, _UI_LABEL_PROPERTY_TEXT, "");
+        
     }
 }
 
