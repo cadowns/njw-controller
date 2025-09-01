@@ -11,14 +11,14 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_clear_flag(ui_HomeScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_muteBtn = ui_txtBtn_create(ui_HomeScreen);
-    lv_obj_set_x(ui_muteBtn, 55);
+    lv_obj_set_x(ui_muteBtn, 90);
     lv_obj_set_y(ui_muteBtn, -20);
-
-    // muteBtnLabel = lv_label_create(ui_muteBtn);
-    // lv_label_set_text(muteBtnLabel, "Mute");
-    // lv_obj_center(muteBtnLabel);
-
     lv_label_set_text(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTNLBL), "Mute");
+
+    ui_toneBypassBtn = ui_txtBtn_create(ui_HomeScreen);
+    lv_obj_set_x(ui_toneBypassBtn, -20);
+    lv_obj_set_y(ui_toneBypassBtn, -20);
+    lv_label_set_text(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTNLBL), "Tone Bypass");
 
     ui_Input1 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input1, -166);
@@ -55,7 +55,7 @@ void ui_HomeScreen_screen_init(void)
     ui_volLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_volLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_volLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_volLabel, 165);
+    lv_obj_set_x(ui_volLabel, 185);
     lv_obj_set_y(ui_volLabel, -20);
     lv_obj_set_align(ui_volLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_volLabel, "50");
@@ -69,14 +69,14 @@ void ui_HomeScreen_screen_init(void)
                                                                                                  LV_ANIM_OFF);
     lv_obj_set_width(ui_trebleSlider, 205);
     lv_obj_set_height(ui_trebleSlider, 20);
-    lv_obj_set_x(ui_trebleSlider, 77);
+    lv_obj_set_x(ui_trebleSlider, 75);
     lv_obj_set_y(ui_trebleSlider, 75);
     lv_obj_set_align(ui_trebleSlider, LV_ALIGN_CENTER);
 
     ui_trebleLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_trebleLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_trebleLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_trebleLabel, 78);
+    lv_obj_set_x(ui_trebleLabel, 75);
     lv_obj_set_y(ui_trebleLabel, 50);
     lv_obj_set_align(ui_trebleLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_trebleLabel, "Treble");
@@ -86,16 +86,16 @@ void ui_HomeScreen_screen_init(void)
     lv_slider_set_mode(ui_bassSlider, LV_SLIDER_MODE_SYMMETRICAL);
     lv_slider_set_value(ui_bassSlider, 0, LV_ANIM_OFF);
     if(lv_slider_get_mode(ui_bassSlider) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_bassSlider, 0, LV_ANIM_OFF);
-    lv_obj_set_width(ui_bassSlider, 209);
+    lv_obj_set_width(ui_bassSlider, 205);
     lv_obj_set_height(ui_bassSlider, 20);
-    lv_obj_set_x(ui_bassSlider, 78);
+    lv_obj_set_x(ui_bassSlider, 75);
     lv_obj_set_y(ui_bassSlider, 130);
     lv_obj_set_align(ui_bassSlider, LV_ALIGN_CENTER);
 
     ui_bassLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_bassLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_bassLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_bassLabel, 77);
+    lv_obj_set_x(ui_bassLabel, 75);
     lv_obj_set_y(ui_bassLabel, 105);
     lv_obj_set_align(ui_bassLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_bassLabel, "Bass");
@@ -103,36 +103,42 @@ void ui_HomeScreen_screen_init(void)
     ui_trebleDownLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_trebleDownLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_trebleDownLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_trebleDownLabel, -37);
+    lv_obj_set_x(ui_trebleDownLabel, -45);
     lv_obj_set_y(ui_trebleDownLabel, 75);
     lv_obj_set_align(ui_trebleDownLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_trebleDownLabel, "-");
+    lv_obj_set_style_text_font(ui_trebleDownLabel, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_trebleUpLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_trebleUpLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_trebleUpLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_trebleUpLabel, 192);
+    lv_obj_set_x(ui_trebleUpLabel, 200);
     lv_obj_set_y(ui_trebleUpLabel, 75);
     lv_obj_set_align(ui_trebleUpLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_trebleUpLabel, "+");
+    lv_obj_set_style_text_font(ui_trebleUpLabel, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_bassDownLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_bassDownLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_bassDownLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_bassDownLabel, -35);
-    lv_obj_set_y(ui_bassDownLabel, 129);
+    lv_obj_set_x(ui_bassDownLabel, -45);
+    lv_obj_set_y(ui_bassDownLabel, 130);
     lv_obj_set_align(ui_bassDownLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_bassDownLabel, "-");
+    lv_obj_set_style_text_font(ui_bassDownLabel, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_bassUpLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_bassUpLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_bassUpLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_bassUpLabel, 194);
-    lv_obj_set_y(ui_bassUpLabel, 131);
+    lv_obj_set_x(ui_bassUpLabel, 200);
+    lv_obj_set_y(ui_bassUpLabel, 130);
     lv_obj_set_align(ui_bassUpLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_bassUpLabel, "+");
+    lv_obj_set_style_text_font(ui_bassUpLabel, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), ui_event_muteBtn, LV_EVENT_ALL,
+                        NULL);
+    lv_obj_add_event_cb(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), ui_event_toneBypassBtn, LV_EVENT_ALL,
                         NULL);
     lv_obj_add_event_cb(ui_comp_get_child(ui_Input1, UI_COMP_TXTBTN_BTN), ui_event_Input1_Input1_Input1Button, LV_EVENT_ALL,
                         NULL);

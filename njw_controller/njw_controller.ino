@@ -24,8 +24,11 @@ int testVol = 50;
 int delta;
 int old_delta;
 
+int savedTrebleLevel = 0;
 int volBeforeMute = 0;
 bool isMuted = false;
+bool isToneBypassed = false;
+
 
 #define LCD_BL 46
 
@@ -209,6 +212,8 @@ extern "C" {
     itoa(dispVol, dispVolChar, 10); //convert dispVar to char array
     lv_label_set_text(ui_volLabel, dispVolChar); //update volume label on display
     lv_bar_set_value(ui_volIndicator, dispVol, LV_ANIM_OFF); //update volume indicator
+    Serial.print("Volume: ");
+    Serial.println(dispVolChar);
   }
 }
 
@@ -221,15 +226,35 @@ extern "C" {
   }
 }
 
+extern "C" {
+  void handleToneBypass() {
+    if (isToneBypassed == false) {
+      Serial.println("tone bypass on");
+      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+      isToneBypassed = true;
+      states.putBool("toneBypass", isToneBypassed);
+      sendI2C(0x05, 0x00);
+    } else if (isToneBypassed == true) {
+      Serial.println("tone bypass off");
+      isToneBypassed = false;
+      states.putBool("toneBypass", isToneBypassed);
+      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+      handleTreble(savedTrebleLevel);
+    }
+  }
+}
+
 extern "C"{
   void handleMute(){
     if (isMuted == false) {
+      Serial.println("muted");
       _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
       volBeforeMute = dispVol;
       isMuted = true;
       states.putBool("mute", isMuted);
       sendI2C(0x01,0x00);
     } else if (isMuted == true) {
+      Serial.println("unmuted");
       isMuted = false;
       states.putBool("mute", isMuted);
       handleVolume(volBeforeMute);
@@ -241,6 +266,11 @@ extern "C"{
 
 extern "C" {
   void handleTreble(int trebleLevel){
+    if (isToneBypassed) {
+      isToneBypassed =  false;
+      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
+    savedTrebleLevel = trebleLevel;
     Serial.println("calling handleTreble with treble level: " + trebleLevel);
     sendI2C(0x03,byte(trebleLevel));
     states.putInt("trebleLevel", trebleLevel);
@@ -257,7 +287,12 @@ extern "C" {
 
 extern "C" {
   void handleBass(int bassLevel){
-    Serial.println("calling handleBass with treble level: " + bassLevel);
+    if (isToneBypassed) {
+      isToneBypassed =  false;
+      handleTreble(savedTrebleLevel);
+      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
+    Serial.println("calling handleBass with bass level: " + bassLevel);
     sendI2C(0x04,byte(bassLevel));
     states.putInt("bassLevel", bassLevel);
     String bass = "Bass";
@@ -275,6 +310,7 @@ extern "C" {
 void reloadLastState(){
   bool doesVolExist = states.isKey("vol");
   if (doesVolExist) {
+    Serial.println("reloaded volume state");
     handleVolume(states.getInt("vol"));
   } else {
     handleVolume(default_vol);
@@ -282,6 +318,7 @@ void reloadLastState(){
   
   bool doesInputExist = states.isKey("input");
   if (doesInputExist) {
+    Serial.println("reloaded input state");
     selectInput(states.getChar("input"));
   } else {
     selectInput(1);
@@ -289,6 +326,7 @@ void reloadLastState(){
 
   bool doesBassLevelExist = states.isKey("bassLevel");
   if (doesBassLevelExist) {
+    Serial.println("reloaded bass level");
     handleBass(states.getInt("bassLevel"));
     lv_slider_set_value(ui_bassSlider, states.getInt("bassLevel"), LV_ANIM_OFF);
   } else {
@@ -298,6 +336,7 @@ void reloadLastState(){
 
   bool doesTrebleLevelExist = states.isKey("trebleLevel");
   if (doesTrebleLevelExist) {
+    Serial.println("reloaded treble level");
     handleTreble(states.getInt("trebleLevel"));
     lv_slider_set_value(ui_trebleSlider, states.getInt("trebleLevel"), LV_ANIM_OFF);
   } else {
@@ -307,11 +346,24 @@ void reloadLastState(){
 
   bool doesMuteExist = states.isKey("mute");
   if (doesMuteExist) {
+    Serial.println("reloaded mute state");
     bool wasMuted = states.getBool("mute");
     if (wasMuted) {
       _ui_state_modify(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
       sendI2C(0x01,0x00);
       isMuted = true;
+    } else {
+    }
+  }
+
+  bool doesToneBypassExist = states.isKey("toneBypass");
+  if (doesToneBypassExist) {
+    Serial.println("reloaded tone bypass state");
+    bool wasToneBypassed = states.getBool("toneBypass");
+    if (wasToneBypassed) {
+      _ui_state_modify(ui_comp_get_child(ui_toneBypassBtn, UI_COMP_TXTBTN_BTN), LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+      sendI2C(0x05,0x00);
+      isToneBypassed = true;
     } else {
     }
   }
@@ -372,7 +424,6 @@ void setup()
 void loop()
 {
   if (input != old_input) {
-    Serial.println(input);
     old_input = input;
   }
 
@@ -380,15 +431,14 @@ void loop()
   if (Wire.available()) {
     byte d = Wire.read();
     if (d != 0){
-      Serial.println(d);
-      Serial.println(d, BIN);
       int neg = bitRead(d,7);
-      Serial.println(neg);
       encVolControl(neg);
       neg = 0;
     }
 
   }
+
+  Serial.println(isToneBypassed);
 
   lv_timer_handler(); /* let the GUI do its work */
   delay( 5 );
