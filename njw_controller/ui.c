@@ -198,11 +198,10 @@ void ui_event_volIndicator(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
 
     if(event_code == LV_EVENT_VALUE_CHANGED) {
-        _ui_arc_set_text_value(ui_volLabel, target, "", "");
-        handleVolume(lv_arc_get_value(target));
+        _ui_slider_set_text_value(ui_volLabel, target, "", "");
+        handleVolume(lv_slider_get_value(target));
     }
 }
-
 void ui_event_Settings(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);

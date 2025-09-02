@@ -7,13 +7,16 @@
 
 void ui_HomeScreen_screen_init(void)
 {
+
+
     ui_HomeScreen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_HomeScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_muteBtn = ui_txtBtn_create(ui_HomeScreen);
-    lv_obj_set_x(ui_muteBtn, 90);
-    lv_obj_set_y(ui_muteBtn, -20);
+    lv_obj_set_x(ui_muteBtn, 0);
+    lv_obj_set_y(ui_muteBtn, 110);
     lv_label_set_text(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTNLBL), "Mute");
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_muteBtn, UI_COMP_TXTBTN_BTNLBL), &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Input1 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input1, -166);
@@ -39,21 +42,25 @@ void ui_HomeScreen_screen_init(void)
 
     lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "AUX");
 
-    ui_volIndicator = lv_bar_create(ui_HomeScreen);
-    lv_obj_set_width(ui_volIndicator, 202);
-    lv_obj_set_height(ui_volIndicator, 20);
-    lv_obj_set_x(ui_volIndicator, 78);
-    lv_obj_set_y(ui_volIndicator, -105);
+    ui_volIndicator = lv_slider_create(ui_HomeScreen);
+    lv_obj_set_width(ui_volIndicator, 30);
+    lv_obj_set_height(ui_volIndicator, 250);
+    lv_obj_set_x(ui_volIndicator, 165);
+    lv_obj_set_y(ui_volIndicator, 0);
     lv_obj_set_align(ui_volIndicator, LV_ALIGN_CENTER);
-    lv_bar_set_value(ui_volIndicator, 50, LV_ANIM_OFF);
+    lv_slider_set_value(ui_volIndicator, 50, LV_ANIM_OFF);
 
     ui_volLabel = lv_label_create(ui_HomeScreen);
     lv_obj_set_width(ui_volLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_volLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_volLabel, 185);
+    lv_obj_set_x(ui_volLabel, 0);
     lv_obj_set_y(ui_volLabel, -20);
     lv_obj_set_align(ui_volLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_volLabel, "50");
+    //static lv_style_t style_vol;
+    //lv_style_init(&style_vol);
+    //lv_style_set_text_font(&style_vol, &arial_128);
+    // lv_obj_add_style(ui_volLabel, &style_vol, LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_volLabel, &lv_font_montserrat_48, LV_PART_MAIN | LV_STATE_DEFAULT);
 
 

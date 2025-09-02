@@ -209,7 +209,7 @@ extern "C" {
     char dispVolChar[16]; //create char for dispVol representation
     itoa(dispVol, dispVolChar, 10); //convert dispVar to char array
     lv_label_set_text(ui_volLabel, dispVolChar); //update volume label on display
-    lv_bar_set_value(ui_volIndicator, dispVol, LV_ANIM_OFF); //update volume indicator
+    lv_slider_set_value(ui_volIndicator, dispVol, LV_ANIM_OFF); //update volume indicator
     Serial.print("Volume: ");
     Serial.println(dispVolChar);
   }
