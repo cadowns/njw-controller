@@ -28,7 +28,7 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_set_x(ui_Input2, -166);
     lv_obj_set_y(ui_Input2, -38);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTNLBL), "CMPTR");
+    lv_label_set_text(ui_comp_get_child(ui_Input2, UI_COMP_TXTBTN_BTNLBL), "COMP");
 
     ui_Input3 = ui_txtBtn_create(ui_HomeScreen);
     lv_obj_set_x(ui_Input3, -165);
@@ -40,7 +40,7 @@ void ui_HomeScreen_screen_init(void)
     lv_obj_set_x(ui_Input4, -165);
     lv_obj_set_y(ui_Input4, 107);
 
-    lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "AUX");
+    lv_label_set_text(ui_comp_get_child(ui_Input4, UI_COMP_TXTBTN_BTNLBL), "TBLT");
 
     ui_volIndicator = lv_slider_create(ui_HomeScreen);
     lv_obj_set_width(ui_volIndicator, 30);
