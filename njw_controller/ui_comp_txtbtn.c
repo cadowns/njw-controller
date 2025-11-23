@@ -31,7 +31,7 @@ lv_obj_t * ui_txtBtn_create(lv_obj_t * comp_parent)
     lv_obj_clear_flag(cui_btn, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_text_color(cui_btn, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(cui_btn, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(cui_btn, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_btn, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_btnLbl;
     cui_btnLbl = lv_label_create(cui_txtBtn);
@@ -41,6 +41,8 @@ lv_obj_t * ui_txtBtn_create(lv_obj_t * comp_parent)
     lv_obj_set_y(cui_btnLbl, -1);
     lv_obj_set_align(cui_btnLbl, LV_ALIGN_CENTER);
     lv_label_set_text(cui_btnLbl, "Text Here");
+    lv_obj_set_style_text_font(cui_btnLbl, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
+
 
     lv_obj_t ** children = lv_mem_alloc(sizeof(lv_obj_t *) * _UI_COMP_TXTBTN_NUM);
     children[UI_COMP_TXTBTN_TXTBTN] = cui_txtBtn;
