@@ -200,12 +200,13 @@ extern "C" {
     }
     dispVol = vol; // save vol (0-100) to global var
     states.putInt("vol", dispVol); // save EEPROM vol
-    byte hexVol = map(dispVol, 0, 100, 0xD6, 0x68); // map displayVol to NJW vol
-    if (hexVol == 0xD6){
-      sendI2C(0x00, 0xFF);
-    } else {
-      sendI2C(0x00, hexVol); //send vol to NJW
-    }
+    byte hexVol = map(dispVol, 0, 100, 0xFE, 0x24); // map displayVol to NJW vol // 0x68 was old max
+    // if (hexVol == 0xD6){
+    //   sendI2C(0x00, 0xFF);
+    // } else {
+    //   sendI2C(0x00, hexVol); //send vol to NJW
+    // }
+    sendI2C(0x00, hexVol); //send vol to NJW
     char dispVolChar[16]; //create char for dispVol representation
     itoa(dispVol, dispVolChar, 10); //convert dispVar to char array
     lv_label_set_text(ui_volLabel, dispVolChar); //update volume label on display
